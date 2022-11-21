@@ -1,9 +1,6 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client";
-import { useParams } from "react-router-dom";
-
-const x = 4000
 
 export const client = new ApolloClient({
-  uri: `http://localhost:${x}`,
+  uri: `https://graphql-fiore.herokuapp.com/graphql`,
   cache: new InMemoryCache(),
 });

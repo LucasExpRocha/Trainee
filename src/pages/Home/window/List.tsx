@@ -13,79 +13,98 @@ import SaveIcon from "@mui/icons-material/Save";
 import CreateIcon from "@mui/icons-material/Create";
 
 import { useQuery } from "../../../utils/graphql";
+import { Create } from "../../../Components/Create";
 import { gql } from "graphql-request";
-
+import { Link } from "react-router-dom";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 
 const QUERY = gql`
-query {
-  users {
-    id
-    name
-    board
-    manufacturingDate
+  query {
+    findAllCar {
+      id
+      name
+      licensePlate
+      manufactureDate
+      version
+    }
   }
-}
 `;
-
-import {Create} from "./Create"
 
 export const ListCars = () => {
   const { data } = useQuery(QUERY);
 
   const [loading, setLoading] = useState(false);
-  function handleClick() {
-    setLoading(true);
-  }
-  
 
   return (
     <>
-    <Create/>
-    <Grid item xs={12} sx={{mt: 2}}>
-      <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-        <Typography component="h2" variant="h5" color="secondary" gutterBottom>
-          Listagem
-        </Typography>
-        <Table size="medium">
-          <TableHead>
-            <TableRow>
-              <TableCell>Carro</TableCell>
-              <TableCell>Placa</TableCell>
-              <TableCell>Fabricação</TableCell>
-              <TableCell align="center">Editar</TableCell>
-              <TableCell align="center">PDF</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-          {data && 
-            data!.users.map(({id, name, board, manufacturingDate}: any) => (
-              <TableRow key={id}>
-                <TableCell>{name}</TableCell>
-                <TableCell>{board}</TableCell>
-                <TableCell>{manufacturingDate}</TableCell>
-                <TableCell align="center">
-                  <Button variant="contained" startIcon={<CreateIcon />}>
-                    EDIT
-                  </Button>
-                </TableCell>
-                <TableCell align="center">
-                  <LoadingButton
-                    color="secondary"
-                    onClick={handleClick}
-                    loading={loading}
-                    loadingPosition="start"
-                    startIcon={<SaveIcon />}
-                    variant="contained"
-                  >
-                    PDF
-                  </LoadingButton>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </Paper>
-    </Grid>
+      <Create />
+      <Grid item xs={12} sx={{ mt: 2 }}>
+        <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
+          <Typography
+            component="h2"
+            variant="h5"
+            color="secondary"
+            gutterBottom
+          >
+            Listagem
+          </Typography>
+          {!data ? (
+            <Box sx={{ display: "flex" }} className="flex--centro">
+              <CircularProgress className="flex--centro" />
+            </Box>
+          ) : (
+            <Table size="medium">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Carro</TableCell>
+                  <TableCell>Placa</TableCell>
+                  <TableCell>Fabricação</TableCell>
+                  <TableCell align="center">Editar</TableCell>
+                  <TableCell align="center">PDF</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {data!.findAllCar.map(
+                  ({ id, name, licensePlate, manufactureDate }: any) => (
+                    <TableRow key={id}>
+                      <TableCell>{name}</TableCell>
+                      <TableCell>{licensePlate}</TableCell>
+                      <TableCell>{manufactureDate}</TableCell>
+                      <TableCell align="center">
+                        <Link to={`edit/${id}`}>
+                          <Button
+                            variant="contained"
+                            startIcon={<CreateIcon />}
+                          >
+                            EDIT
+                          </Button>
+                        </Link>
+                      </TableCell>
+                      <TableCell align="center">
+                        <a
+                          href={`https://graphql-fiore.herokuapp.com/pdf/${id}`}
+                          target="_blank"
+                        >
+                          <LoadingButton
+                            color="secondary"
+                            loading={loading}
+                            loadingPosition="start"
+                            startIcon={<SaveIcon />}
+                            variant="contained"
+                          >
+                            PDF
+                          </LoadingButton>
+                        </a>
+                      </TableCell>
+                    </TableRow>
+                  )
+                )}
+              </TableBody>
+            </Table>
+          )}
+        </Paper>
+      </Grid>
     </>
   );
 };

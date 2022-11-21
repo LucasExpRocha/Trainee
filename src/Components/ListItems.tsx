@@ -31,14 +31,6 @@ export const mainListItems = (
         <ListItemText primary="Listagem" />
       </ListItemButton>
     </Link>
-    <Link to="/create">
-      <ListItemButton>
-        <ListItemIcon>
-          <AddCircleOutlineIcon />
-        </ListItemIcon>
-        <ListItemText primary="Criar" />
-      </ListItemButton>
-    </Link>
   </React.Fragment>
 );
 

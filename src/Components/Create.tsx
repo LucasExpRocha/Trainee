@@ -9,42 +9,40 @@ import Typography from "@mui/material/Typography";
 
 import { useMutation, gql } from "@apollo/client";
 
+
 const CREATE_CAR = gql`
-  mutation ($name: String!, $board: String!, $manufacturingDate: String!) {
-    createUser(
-      name: $name
-      board: $board
-      manufacturingDate: $manufacturingDate
-    ) {
+  mutation ($car: CarInput) {
+    createCar(car: $car) {
       id
       name
-      board
-      manufacturingDate
+      licensePlate
+      manufactureDate
+      version
     }
   }
 `;
 
 export const Create = () => {
-  const [name, setName] = useState("");
-  const [board, setBoard] = useState("");
-  const [manufacturingDate, setManufacturingDate] = useState("");
+  const [car, setCar] = useState({
+    name: '',
+    licensePlate: '',
+    manufactureDate: '',
+  })
 
-  const [createUser, { data, loading, error }] = useMutation(CREATE_CAR);
+  const [createCar, { data, loading, error }] = useMutation(CREATE_CAR);
 
   async function handleSubmit (event: FormEvent) {
     event.preventDefault();
 
-    if(!name) {return}
+    if(!car.name) {return}
 
-    await createUser({
+    
+    await createCar({
       variables: {
-        name,
-        board,
-        manufacturingDate
+        car
       }
     })
 
-    console.log(data);
   };
 
   return (
@@ -62,28 +60,28 @@ export const Create = () => {
               multiline
               variant="standard"
               InputLabelProps={{ shrink: true }}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => setCar({...car, name: e.target.value})}
             />
           </Grid>
           <Grid item xs={3}>
             <TextField
-              id="board"
+              id="licensePlate"
               label="Placa"
               placeholder="Exemplo: LUX9D35"
               multiline
               variant="standard"
               InputLabelProps={{ shrink: true }}
-              onChange={(e) => setBoard(e.target.value)}
+              onChange={(e) => setCar({...car, licensePlate: e.target.value})}
             />
           </Grid>
           <Grid item xs={3}>
             <TextField
-              id="manufacturingDate"
+              id="manufactureDate"
               label="Ano de fabricação"
               type="date"
               variant="standard"
               InputLabelProps={{ shrink: true }}
-              onChange={(e) => setManufacturingDate(e.target.value)}
+              onChange={(e) => setCar({...car, manufactureDate: e.target.value})}
             />
           </Grid>
           <Grid item xs={3}>

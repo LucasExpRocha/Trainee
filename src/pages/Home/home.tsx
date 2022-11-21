@@ -12,8 +12,8 @@ import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import { Header } from "../../Components/Header";
 import { Aside } from "../../Components/AsideBar";
 import { ListCars } from "./window/List";
-import { Create } from "./window/Create";
 import { Init } from "./window/Init";
+import { EditCar } from "./window/Edit";
 
 
 
@@ -71,11 +71,11 @@ const AppBar = styled(MuiAppBar, {
 const mdTheme = createTheme();
 
 export const Home = () => {
-  const { pathname } = useParams()
-
+  const { pathname, id } = useParams()
+  
   const howWindowSelected = (pathname: string) => ({
     'list': <ListCars/>,
-    'create': <Create/>
+    'edit': <EditCar/>
   })[pathname]
 
   const [open, setOpen] = useState(true);
