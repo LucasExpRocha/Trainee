@@ -9,7 +9,6 @@ import Typography from "@mui/material/Typography";
 
 import { useMutation, gql } from "@apollo/client";
 
-
 const CREATE_CAR = gql`
   mutation ($car: CarInput) {
     createCar(car: $car) {
@@ -24,26 +23,28 @@ const CREATE_CAR = gql`
 
 export const Create = () => {
   const [car, setCar] = useState({
-    name: '',
-    licensePlate: '',
-    manufactureDate: '',
-  })
+    name: "",
+    licensePlate: "",
+    manufactureDate: "",
+  });
 
-  const [createCar, { data, loading, error }] = useMutation(CREATE_CAR);
+  const [createCar] = useMutation(CREATE_CAR);
 
-  async function handleSubmit (event: FormEvent) {
+  async function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
-    if(!car.name) {return}
+    if (!car.name) {
+      return;
+    }
 
-    
     await createCar({
       variables: {
-        car
-      }
-    })
+        car,
+      },
+    });
 
-  };
+    alert("Criado com sucesso!");
+  }
 
   return (
     <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
@@ -60,7 +61,7 @@ export const Create = () => {
               multiline
               variant="standard"
               InputLabelProps={{ shrink: true }}
-              onChange={(e) => setCar({...car, name: e.target.value})}
+              onChange={(e) => setCar({ ...car, name: e.target.value })}
             />
           </Grid>
           <Grid item xs={3}>
@@ -71,7 +72,7 @@ export const Create = () => {
               multiline
               variant="standard"
               InputLabelProps={{ shrink: true }}
-              onChange={(e) => setCar({...car, licensePlate: e.target.value})}
+              onChange={(e) => setCar({ ...car, licensePlate: e.target.value })}
             />
           </Grid>
           <Grid item xs={3}>
@@ -81,7 +82,9 @@ export const Create = () => {
               type="date"
               variant="standard"
               InputLabelProps={{ shrink: true }}
-              onChange={(e) => setCar({...car, manufactureDate: e.target.value})}
+              onChange={(e) =>
+                setCar({ ...car, manufactureDate: e.target.value })
+              }
             />
           </Grid>
           <Grid item xs={3}>

@@ -70,7 +70,7 @@ export const ListCars = () => {
                     <TableRow key={id}>
                       <TableCell>{name}</TableCell>
                       <TableCell>{licensePlate}</TableCell>
-                      <TableCell>{manufactureDate}</TableCell>
+                      <TableCell>{manufactureDate.split('-').reverse().join('/')}</TableCell>
                       <TableCell align="center">
                         <Link to={`edit/${id}`}>
                           <Button
