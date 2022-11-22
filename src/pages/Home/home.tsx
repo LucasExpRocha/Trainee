@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Outlet } from "react-router-dom";
 
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -72,11 +72,6 @@ const mdTheme = createTheme();
 
 export const Home = () => {
   const { pathname, id } = useParams()
-  
-  const howWindowSelected = (pathname: string) => ({
-    'list': <ListCars/>,
-    'edit': <EditCar/>
-  })[pathname]
 
   const [open, setOpen] = useState(true);
   const toggleDrawer = () => {
@@ -108,9 +103,7 @@ export const Home = () => {
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
-                {
-                  pathname ? howWindowSelected(pathname) : <Init/>
-                }
+                <Outlet/>
               </Grid>
             </Grid>
           </Container>

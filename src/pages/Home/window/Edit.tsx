@@ -7,25 +7,16 @@ import Paper from "@mui/material/Paper/Paper";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
-import { useMutation, gql, useQuery } from "@apollo/client";
 import { useParams, useNavigate } from "react-router-dom";
+import CircularProgress from "@mui/material/CircularProgress";
 
-const CREATE_CAR = gql`
-  mutation ($car: CarInput) {
-    updateCar(car: $car) {
-      id
-      name
-      licensePlate
-      manufactureDate
-      version
-    }
-  }
-`;
+import { useEditCar } from "../../../hooks/useEditCar";
+import { useDeleteCar } from "../../../hooks/useDeleteCar";
+import { useEditCarByID } from "../../../hooks/useEditCarByID";
 
 export const EditCar = (props: any) => {
-  const { id } = useParams();
   const navigate = useNavigate();
-
+  const { id } = useParams();
   const [car, setCar] = useState({
     id: "",
     name: "",
@@ -33,67 +24,50 @@ export const EditCar = (props: any) => {
     manufactureDate: "",
     version: 0,
   });
-  
-  const [updateCar] = useMutation(CREATE_CAR);
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
-    
+
     if (!car.name) {
       return;
     }
 
-    await updateCar({
-      variables: {
-        car,
-      },
-    });
-
+    useEditCar(car);
+    alert("Os dados foram alterados com sucesso!");
     navigate(-1);
   }
-
-  const DELETE_CAR = gql`
-    mutation {
-      deleteCar(id: ${id})
-    }
-  `;
-  const [deleteCar, ] = useMutation(DELETE_CAR); 
 
   async function handleDeleteCar() {
-    await deleteCar();
+    const response = await useDeleteCar(id);
+    alert(response);
     navigate(-1);
   }
 
-  const { data } = useQuery(gql`
-    query{
-        findCarById(id: ${id}){
-          id
-          name
-          licensePlate
-          manufactureDate
-          version
-        }
-      }
-  `);
-
+  const { data } = useEditCarByID(id);
   useEffect(() => {
     if (data) {
       setCar({
-        id: data.findCarById.id,
-        name: data.findCarById.name,
-        licensePlate: data.findCarById.licensePlate,
-        manufactureDate: data.findCarById.manufactureDate,
-        version: data.findCarById.version,
+        id: data.id,
+        name: data.name,
+        licensePlate: data.licensePlate,
+        manufactureDate: data.manufactureDate,
+        version: data.version,
       });
     }
   }, [data]);
+
+  console.log(car)
 
   return (
     <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
       <Typography component="h2" variant="h6" color="primary" gutterBottom>
         Editar
       </Typography>
-      {data && (
+      {!data ? (
+        <Box sx={{ display: "flex" }} className="flex--centro">
+          <CircularProgress className="flex--centro" />
+        </Box>
+      ) : (
         <Box component="form" sx={{ mt: 1, p: 3 }} onSubmit={handleSubmit}>
           <Grid container spacing={2} alignItems="center">
             <Grid item xs={3}>
@@ -105,7 +79,7 @@ export const EditCar = (props: any) => {
                 variant="standard"
                 InputLabelProps={{ shrink: true }}
                 onChange={(e) => setCar({ ...car, name: e.target.value })}
-                defaultValue={data.findCarById.name}
+                defaultValue={data.name}
               />
             </Grid>
             <Grid item xs={2}>
@@ -119,7 +93,7 @@ export const EditCar = (props: any) => {
                 onChange={(e) =>
                   setCar({ ...car, licensePlate: e.target.value })
                 }
-                defaultValue={data.findCarById.licensePlate}
+                defaultValue={data.licensePlate}
               />
             </Grid>
             <Grid item xs={3}>
@@ -132,7 +106,7 @@ export const EditCar = (props: any) => {
                 onChange={(e) =>
                   setCar({ ...car, manufactureDate: e.target.value })
                 }
-                defaultValue={data.findCarById.manufactureDate}
+                defaultValue={data.manufactureDate}
               />
             </Grid>
             <Grid item xs={2}>

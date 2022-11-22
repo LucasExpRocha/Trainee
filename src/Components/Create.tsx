@@ -7,19 +7,8 @@ import Paper from "@mui/material/Paper/Paper";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
-import { useMutation, gql } from "@apollo/client";
+import { useCreateCar } from "../hooks/useCreateCar"
 
-const CREATE_CAR = gql`
-  mutation ($car: CarInput) {
-    createCar(car: $car) {
-      id
-      name
-      licensePlate
-      manufactureDate
-      version
-    }
-  }
-`;
 
 export const Create = () => {
   const [car, setCar] = useState({
@@ -28,20 +17,14 @@ export const Create = () => {
     manufactureDate: "",
   });
 
-  const [createCar] = useMutation(CREATE_CAR);
-
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
-
+    
     if (!car.name) {
       return;
     }
 
-    await createCar({
-      variables: {
-        car,
-      },
-    });
+    useCreateCar(car)
 
     alert("Criado com sucesso!");
   }

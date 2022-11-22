@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper/Paper";
 import Table from "@mui/material/Table";
@@ -7,17 +6,17 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
-import LoadingButton from "@mui/lab/LoadingButton";
 import Button from "@mui/material/Button";
-import SaveIcon from "@mui/icons-material/Save";
 import CreateIcon from "@mui/icons-material/Create";
-
-import { useQuery } from "../../../utils/graphql";
-import { Create } from "../../../Components/Create";
-import { gql } from "graphql-request";
-import { Link } from "react-router-dom";
-import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
+import CircularProgress from "@mui/material/CircularProgress";
+
+import { Link } from "react-router-dom";
+import { gql, request } from "graphql-request";
+
+import { ButtonPDF } from "../../../Components/ButtonPDF";
+import { useFindListCars } from "../../../hooks/useFindListCars";
+import { Create } from "../../../Components/Create";
 
 const QUERY = gql`
   query {
@@ -32,9 +31,7 @@ const QUERY = gql`
 `;
 
 export const ListCars = () => {
-  const { data } = useQuery(QUERY);
-
-  const [loading, setLoading] = useState(false);
+  const { data } = useFindListCars(QUERY);
 
   return (
     <>
@@ -65,12 +62,14 @@ export const ListCars = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {data!.findAllCar.map(
+                {data.map(
                   ({ id, name, licensePlate, manufactureDate }: any) => (
                     <TableRow key={id}>
                       <TableCell>{name}</TableCell>
                       <TableCell>{licensePlate}</TableCell>
-                      <TableCell>{manufactureDate.split('-').reverse().join('/')}</TableCell>
+                      <TableCell>
+                        {manufactureDate.split("-").reverse().join("/")}
+                      </TableCell>
                       <TableCell align="center">
                         <Link to={`edit/${id}`}>
                           <Button
@@ -82,20 +81,7 @@ export const ListCars = () => {
                         </Link>
                       </TableCell>
                       <TableCell align="center">
-                        <a
-                          href={`https://graphql-fiore.herokuapp.com/pdf/${id}`}
-                          target="_blank"
-                        >
-                          <LoadingButton
-                            color="secondary"
-                            loading={loading}
-                            loadingPosition="start"
-                            startIcon={<SaveIcon />}
-                            variant="contained"
-                          >
-                            PDF
-                          </LoadingButton>
-                        </a>
+                        <ButtonPDF id={id} name={name}/>
                       </TableCell>
                     </TableRow>
                   )
