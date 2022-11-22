@@ -77,7 +77,7 @@ export const Create = () => {
       </Typography>
       <Box component="form" sx={{ mt: 1, p: 3 }} onSubmit={handleSubmit}>
         <Grid container spacing={2}>
-          <Grid item xs={4} align="center">
+          <Grid item xs={4}>
             <Grid sx={{ position: "relative" }}>
               <InputLabel htmlFor="photo" sx={{ position: "absolute" }}>
                 <Grid>
