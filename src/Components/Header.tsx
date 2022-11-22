@@ -1,15 +1,8 @@
-import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 
 export const Header = (props: any) => {
-
-  const titleBar = (title: string) => ({
-    'list': 'Listagem',
-    'create': 'Criar'
-  })[title]
-
   return (
     <Toolbar
       sx={{
@@ -28,15 +21,6 @@ export const Header = (props: any) => {
       >
         <MenuIcon />
       </IconButton>
-      <Typography
-        component="h1"
-        variant="h6"
-        color="inherit"
-        noWrap
-        sx={{ flexGrow: 1 }}
-      >
-        {props.title ? titleBar(String(props.title)) : 'Home'}
-      </Typography>
     </Toolbar>
   );
 }

@@ -1,8 +1,6 @@
 import { gql, request  } from "graphql-request";
 
-export async function useEditCar(car: any) {
-  const endpoint = "https://graphql-fiore.herokuapp.com/graphql";
-
+export async function useEditCar(car: any, endpoint: string) {
   const EDIT_CAR = gql`
     mutation ($car: CarInput) {
       updateCar(car: $car) {
@@ -14,8 +12,6 @@ export async function useEditCar(car: any) {
       }
     }
   `;
-
-  console.log(car)
 
   const response = await request(endpoint, EDIT_CAR, {
     car

@@ -1,8 +1,7 @@
 import { gql, request  } from "graphql-request";
 
-export async function useDeleteCar(id: string | undefined) {
-  const endpoint = "https://graphql-fiore.herokuapp.com/graphql";
 
+export async function useDeleteCar(id: string | undefined, endpoint: string) {
   const DELETE_CAR = gql`
     mutation {
       deleteCar(id: ${id})

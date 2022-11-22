@@ -1,21 +1,16 @@
 import { useState } from "react";
-import { useParams, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
-import Toolbar from "@mui/material/Toolbar/Toolbar";
+import Toolbar from "@mui/material/Toolbar";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
-import Container from "@mui/material/Container/Container";
-import Grid from "@mui/material/Grid/Grid";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 
 import { Header } from "../../Components/Header";
 import { Aside } from "../../Components/AsideBar";
-import { ListCars } from "./window/List";
-import { Init } from "./window/Init";
-import { EditCar } from "./window/Edit";
-
-
 
 const drawerWidth: number = 240;
 
@@ -24,8 +19,8 @@ interface AppBarProps extends MuiAppBarProps {
 }
 
 const Drawer = styled(MuiDrawer, {
-  shouldForwardProp: (prop) => prop !== "open",
-})(({ theme, open }) => ({
+  shouldForwardProp: (prop: any) => prop !== "open",
+})(({ theme, open }: any) => ({
   "& .MuiDrawer-paper": {
     position: "relative",
     whiteSpace: "nowrap",
@@ -50,8 +45,8 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== "open",
-})<AppBarProps>(({ theme, open }) => ({
+  shouldForwardProp: (prop: any) => prop !== "open",
+})<AppBarProps>(({ theme, open }: any) => ({
   zIndex: theme.zIndex.drawer + 1,
   background: "#673ab7",
   transition: theme.transitions.create(["width", "margin"], {
@@ -70,9 +65,9 @@ const AppBar = styled(MuiAppBar, {
 
 const mdTheme = createTheme();
 
-export const Home = () => {
-  const { pathname, id } = useParams()
+import { routesBackend } from "../../routes/backEnd.routes";
 
+export const Home = () => {
   const [open, setOpen] = useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -82,7 +77,7 @@ export const Home = () => {
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: "flex" }}>
         <AppBar position="absolute" open={open}>
-          <Header toggleDrawer={toggleDrawer} open={open} title={pathname}/>
+          <Header toggleDrawer={toggleDrawer} open={open}/>
         </AppBar>
         <Drawer variant="permanent" open={open}>
           <Aside toggleDrawer={toggleDrawer} />
@@ -90,7 +85,7 @@ export const Home = () => {
         <Box
           component="main"
           sx={{
-            backgroundColor: (theme) =>
+            backgroundColor: (theme: any) =>
               theme.palette.mode === "light"
                 ? theme.palette.grey[100]
                 : theme.palette.grey[900],

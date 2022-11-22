@@ -1,4 +1,5 @@
 import { useState, useEffect, FormEvent } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -6,16 +7,16 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper/Paper";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-
-import { useParams, useNavigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 
 import { useEditCar } from "../../../hooks/useEditCar";
 import { useDeleteCar } from "../../../hooks/useDeleteCar";
-import { useEditCarByID } from "../../../hooks/useEditCarByID";
+import { useFindCarByID } from "../../../hooks/useFindCarByID";
+import { routesBackend } from "../../../routes/backEnd.routes"
 
 export const EditCar = (props: any) => {
   const navigate = useNavigate();
+  const route = routesBackend()
   const { id } = useParams();
   const [car, setCar] = useState({
     id: "",
@@ -32,18 +33,18 @@ export const EditCar = (props: any) => {
       return;
     }
 
-    useEditCar(car);
+    useEditCar(car, route);
     alert("Os dados foram alterados com sucesso!");
     navigate(-1);
   }
 
   async function handleDeleteCar() {
-    const response = await useDeleteCar(id);
+    const response = await useDeleteCar(id, route);
     alert(response);
     navigate(-1);
   }
 
-  const { data } = useEditCarByID(id);
+  const { data } = useFindCarByID(id);
   useEffect(() => {
     if (data) {
       setCar({
@@ -55,8 +56,6 @@ export const EditCar = (props: any) => {
       });
     }
   }, [data]);
-
-  console.log(car)
 
   return (
     <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
@@ -126,7 +125,7 @@ export const EditCar = (props: any) => {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                onClick={(e) => {
+                onClick={(e: any) => {
                   e.preventDefault();
                   const Confirm = confirm("Deseja realmente deletar?");
                   return Confirm ? handleDeleteCar() : null;

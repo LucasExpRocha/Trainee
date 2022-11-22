@@ -1,8 +1,7 @@
 import { gql, request } from "graphql-request";
 
-export async function useCreateCar(car: any) {
-  const endpoint = "https://graphql-fiore.herokuapp.com/graphql";
 
+export async function useCreateCar(car: any, endpoint: string){
   const CREATE_CAR = gql`
     mutation ($car: CarInput) {
       createCar(car: $car) {
