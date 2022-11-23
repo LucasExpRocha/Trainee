@@ -1,4 +1,4 @@
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useEffect } from "react";
 
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -28,6 +28,7 @@ export const Create = () => {
   let route = routesBackend()
 
   const [car, setCar] = useState({
+    // imageCarBase64: "",
     name: "",
     licensePlate: "",
     manufactureDate: "",
@@ -70,6 +71,10 @@ export const Create = () => {
     alert("Criado com sucesso!");
   }
 
+  // useEffect(() => {
+  //   setCar({...car, imageCarBase64: avatar})
+  // }, [avatar])
+
   return (
     <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
       <Typography component="h2" variant="h6" color="primary" gutterBottom>
@@ -77,14 +82,15 @@ export const Create = () => {
       </Typography>
       <Box component="form" sx={{ mt: 1, p: 3 }} onSubmit={handleSubmit}>
         <Grid container spacing={2}>
-          <Grid item xs={4}>
+          <Grid container item xs={4}>
             <Grid sx={{ position: "relative" }}>
-              <InputLabel htmlFor="photo" sx={{ position: "absolute" }}>
+              <InputLabel htmlFor="photo">
                 <Grid>
                   <Avatar
                     alt="CarImage"
                     src={avatar}
                     sx={{ width: 200, height: 200 }}
+                    
                   />
                   <Fab
                     size="medium"
