@@ -5,7 +5,7 @@ import { routesBackend } from "../routes/backEnd.routes"
 let route: string;
 
 const fetcher = async (query: string) =>
-  await request("https://api-carro-graphql.herokuapp.com/graphql", query)
+  await request(route, query)
     .then(res => res.findCarById)
 
 export const useFindCarByID = (id: string | undefined) => {

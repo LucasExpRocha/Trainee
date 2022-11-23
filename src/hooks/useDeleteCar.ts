@@ -12,4 +12,3 @@ export async function useDeleteCar(id: string | undefined, endpoint: string) {
 
   return response.deleteCar
 }
-
