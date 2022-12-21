@@ -28,7 +28,7 @@ export const Create = () => {
   let route = routesBackend()
 
   const [car, setCar] = useState({
-    // imageCarBase64: "",
+    imageCarBase64: "",
     name: "",
     licensePlate: "",
     manufactureDate: "",
@@ -36,6 +36,13 @@ export const Create = () => {
 
   async function handleChangeAvatar(event: any) {
     const file = event.target.files[0];
+
+    const thisIsImage = file.type.includes('image')
+
+    if(!thisIsImage){
+      alert("Apenas imagens PNG, JPG ou JPEG")
+      return
+    }
 
     let base64: any;
     base64 = await convertToBase64(file);
@@ -63,6 +70,7 @@ export const Create = () => {
     event.preventDefault();
 
     if (!car.name) {
+      alert("Coloque ao menos o Modelo...")
       return;
     }
 
@@ -71,9 +79,9 @@ export const Create = () => {
     alert("Criado com sucesso!");
   }
 
-  // useEffect(() => {
-  //   setCar({...car, imageCarBase64: avatar})
-  // }, [avatar])
+  useEffect(() => {
+    setCar({...car, imageCarBase64: avatar})
+  }, [avatar])
 
   return (
     <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>

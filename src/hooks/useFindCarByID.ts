@@ -17,6 +17,7 @@ export const useFindCarByID = (id: string | undefined) => {
           name
           licensePlate
           manufactureDate
+          imageCarBase64
           version
         }
       }

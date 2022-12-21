@@ -65,8 +65,6 @@ const AppBar = styled(MuiAppBar, {
 
 const mdTheme = createTheme();
 
-import { routesBackend } from "../../routes/backEnd.routes";
-
 export const Home = () => {
   const [open, setOpen] = useState(true);
   const toggleDrawer = () => {

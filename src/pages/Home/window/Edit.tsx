@@ -37,6 +37,7 @@ export const EditCar = (props: any) => {
     name: "",
     licensePlate: "",
     manufactureDate: "",
+    imageCarBase64: "",
     version: 0,
   });
 
@@ -64,7 +65,7 @@ export const EditCar = (props: any) => {
     let base64: any;
     base64 = await convertToBase64(file);
 
-    setAvatar(base64);
+    setCar({...car, imageCarBase64: base64})
   }
 
   const convertToBase64 = (file: any) => {
@@ -86,13 +87,7 @@ export const EditCar = (props: any) => {
   const { data } = useFindCarByID(id);
   useEffect(() => {
     if (data) {
-      setCar({
-        id: data.id,
-        name: data.name,
-        licensePlate: data.licensePlate,
-        manufactureDate: data.manufactureDate,
-        version: data.version,
-      });
+      setCar(data);
     }
   }, [data]);
 
@@ -114,7 +109,7 @@ export const EditCar = (props: any) => {
                   <Grid>
                     <Avatar
                       alt="CarImage"
-                      src={avatar}
+                      src={car.imageCarBase64}
                       sx={{ width: 200, height: 200 }}
                     />
                     <Fab
